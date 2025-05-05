@@ -23,13 +23,13 @@ jobs:
 
       - name: Build and push backend image
         run: |
-          cd backend
+          cd server
           ./mvnw clean package -DskipTests
           docker build -t ${{ secrets.DOCKER_USERNAME }}/e-commerce-springboot-app:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/e-commerce-springboot-app:latest
 
       - name: Build and push frontend image
         run: |
-          cd frontend
+          cd client
           docker build -t ${{ secrets.DOCKER_USERNAME }}/e-commerce-react-app:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/e-commerce-react-app:latest
