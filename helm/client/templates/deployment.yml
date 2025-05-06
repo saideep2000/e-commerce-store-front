@@ -13,7 +13,7 @@ spec:
         app: client
     spec:
       containers:
-        - name: client
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          ports:
-            - containerPort: {{ .Values.containerPort }}
+      - name: client
+        image: saideepsamineni/ecommerce-ui:latest
+        ports:
+        - containerPort: 80

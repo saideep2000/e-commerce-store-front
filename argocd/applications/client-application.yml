@@ -1,18 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: client
+  name: ecommerce-server
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/saideep2000/e-commerce-store-front
-    targetRevision: HEAD
-    path: helm/client
+    repoURL: https://github.com/saideep2000/e-commerce-store-front.git
+    targetRevision: main
+    path: helm/server
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: ecommerce
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: client
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   selector:
     app: client
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.containerPort }}
+  - port: 80
+    targetPort: 80

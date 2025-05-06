@@ -38,7 +38,7 @@ Once you get it, you'll update your Terraform security group rule to allow SSH a
 
 ssh -i /path/to/your-key.pem ec2-user@<BASTION_PUBLIC_IP>
 
-ssh -i ../key-pair/aws_login.pem ec2-user@34.229.19.68
+ssh -i ../key-pair/aws_login.pem ec2-user@54.163.197.243
 
 
 # Install AWS CLI
@@ -46,14 +46,16 @@ sudo yum update -y
 sudo yum install -y aws-cli
 
 # Install kubectl for EKS 1.27
-curl -LO "https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.6/2023-10-03/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl"
 chmod +x kubectl
-sudo mv kubectl /usr/local/bin
-
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
 
 ------------------------------
 
 aws eks --region us-east-1 update-kubeconfig --name ecommerce-cluster
+
+aws configure
 
 You can test with:
 kubectl get nodes
@@ -73,6 +75,14 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 -----------------------------------------------
 
+after forwarding you need SSH tunneling
+
+ssh -i ../key-pair/aws_login.pem -L 8080:localhost:8080 ec2-user@54.163.197.243
+
+
+
+
+
 Visit: https://localhost:8080
 Default login:
 
@@ -83,32 +93,62 @@ password:
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d
 
 -------------------------------
-Deploy ArgoCD Applications
-Apply your argocd/backend-app.yaml and frontend-app.yaml:
 
-kubectl apply -f argocd/backend-app.yaml
-kubectl apply -f argocd/frontend-app.yaml
+cat > ecommerce-app-of-apps.yaml << 'EOF'
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ecommerce
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/saideep2000/e-commerce-store-front.git
+    targetRevision: main
+    path: argocd
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+EOF
+
+
+
+
+
+kubectl apply -f ecommerce-app-of-apps.yaml
+
+No need to do anything from here in the argocd UI 
+
+bastion_public_ip = "54.163.197.243"
+cluster_endpoint = "https://1EA1F3911E69185016465066EC54CB98.sk1.us-east-1.eks.amazonaws.com"
+cluster_name = "ecommerce-cluster"
+db_connection_string = "jdbc:mysql://ecommerce-db.cru4uuao25en.us-east-1.rds.amazonaws.com:3306/product_catalog"
+rds_database_name = "product_catalog"
+rds_hostname = "ecommerce-db.cru4uuao25en.us-east-1.rds.amazonaws.com"
+rds_port = 3306
+rds_username = "admin"
+
+
+
+chmod +x db-secret-generation.sh
+
+
+terraform apply
+./db-secret-generation.sh
+
+
+-------------------------------
+
 
 --------------------------------
 
-Verify in ArgoCD UI
-Check:
 
-✅ Health = Healthy
-
-✅ Sync Status = Synced
-
-✅ Image = your latest Docker tag from Docker Hub
 
 ------------------------------
 
-terraform apply  ✅
-↓
-aws eks update-kubeconfig  ✅
-↓
-kubectl install ArgoCD  ✅
-↓
-kubectl apply -f argocd/*.yaml  ✅
-↓
-Visit ArgoCD UI and watch it deploy  ✅
+
 
