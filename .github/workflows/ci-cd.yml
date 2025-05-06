@@ -36,7 +36,7 @@ jobs:
           IMAGE_ID=$(docker images -q ecommerce-api:latest)
           echo "Using Docker username starting with: ${{secrets.DOCKER11_USERNAME}}..."
 
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/ecommerce-api:latest
+          docker tag $IMAGE_ID ${{ secrets.DOCKER12_USERNAME }}/ecommerce-api:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-api:latest
 
       - name: Build and push client image
