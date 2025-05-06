@@ -1,0 +1,45 @@
+# Node.js (React client)
+client/node_modules/
+client/build/
+client/.env
+
+# Java (Spring Boot server)
+server/target/
+server/.classpath
+server/.project
+server/.settings/
+server/.env
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Mac system files
+.DS_Store
+
+# Logs
+*.log
+
+# Env files
+.env
+.env.*
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+
+# Helm
+helm/**/charts/
+helm/**/templates/*.tgz
+
+# VS Code
+.vscode/
+
+# SSH keys or other sensitive assets
+key-pair/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
