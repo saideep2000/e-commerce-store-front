@@ -5,3 +5,8 @@ variable "aws_region" {
 variable "cluster_name" {
   default = "ecommerce-cluster"
 }
+
+variable "bastion_key_name" {
+  description = "SSH key name for bastion host"
+  type        = string
+}
