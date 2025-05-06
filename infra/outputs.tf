@@ -1,3 +1,7 @@
-output "springboot_server_ip" {
-  value = aws_instance.springboot_server.public_ip
+output "cluster_name" {
+  value = module.eks.cluster_name
+}
+
+output "kubeconfig" {
+  value = module.eks.kubeconfig
 }

@@ -1,0 +1,9 @@
+image:
+  repository: saideepsamineni/ecommerce-ui
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 80

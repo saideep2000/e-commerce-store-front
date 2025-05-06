@@ -1,0 +1,6 @@
+image:
+  repository: saideepsamineni/ecommerce-api
+  tag: latest
+service:
+  type: ClusterIP
+  port: 8080
