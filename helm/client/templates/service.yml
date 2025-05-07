@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: client
 spec:
-  type: ClusterIP
+  type: LoadBalancer  # Change this from ClusterIP to LoadBalancer
   selector:
     app: client
   ports:
