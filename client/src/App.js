@@ -10,20 +10,29 @@ function App() {
   const [selectCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+  
+  // Get the API base URL from environment variable or default to the service name
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://server:8080';
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/products')
+    fetch(`${API_BASE_URL}/api/products`)
     .then(response => response.json())
     .then(data => {
       setProducts(data);
     })
+    .catch(error => {
+      console.error('Error fetching products:', error);
+    });
 
-    fetch('http://localhost:8080/api/categories')
+    fetch(`${API_BASE_URL}/api/categories`)
     .then(response => response.json())
     .then(data => {
       setCategories(data);
     })
-  }, [])
+    .catch(error => {
+      console.error('Error fetching categories:', error);
+    });
+  }, [API_BASE_URL]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);

@@ -79,7 +79,8 @@ after forwarding you need SSH tunneling
 
 ssh -i ../key-pair/aws_login.pem -L 8080:localhost:8080 ec2-user@54.163.197.243
 
-
+Update your local kubeconfig:
+aws eks update-kubeconfig --name ecommerce-cluster --region us-east-1
 
 
 
