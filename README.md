@@ -93,6 +93,20 @@ password:
 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d
 
+kubectl get namespaces
+
+kubectl get applications -n argocd
+
+kubectl get services --all-namespaces
+
+kubectl get service client -n <namespace> -o wide
+
+kubectl get application client -n argocd -o yaml | grep -A2 namespace
+kubectl get application server -n argocd -o yaml | grep -A2 namespace
+
+
+kubectl describe application client -n argocd
+kubectl describe application server -n argocd
 -------------------------------
 
 cat > ecommerce-app-of-apps.yaml << 'EOF'
